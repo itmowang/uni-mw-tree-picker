@@ -105,23 +105,34 @@ export default {
       // emit
       this.$emit("cancel");
     },
-    // 根据传递进来的数组 和动态的key 和this.datasource 匹配上的 item[key] 等于 datas中的某个id 说明这个item是选中的 
+    // 根据传递进来的数组 和动态的key 和this.datasource 匹配上的 item[key] 等于 datas中的某个id 说明这个item是选中的
     checkData(datas, key) {
+		console.log(datas,'传值怎么会这样',datas.length)
       this.$nextTick(() => {
-       this.datasource=  this.datasource.map((item) => {
-           if(datas.some((data) => data[key] === item[key])) {
-             item.check = true;
-            //  如果勾选了子节点，那么它的父节点也要勾选
-            if (item.level > 1) {
-              const parentIndex = item.index.split("-").slice(0, -1).join("-");
-              const parent = this.datasource.find(
-                (item) => item.index === parentIndex
-              );
-              parent.check = true;
-            }
-           }
-           return item;
-        });
+		  if(datas.length!=0){
+			 this.datasource =  this.datasource.map((item) => {
+			     if(datas.some((data) => data[key] === item[key])) {
+			       item.check = true;
+			      // 如果勾选了子节点，那么它的父节点也要勾选
+			      if (item.level > 1) {
+			        const parentIndex = item.index.split("-").slice(0, -1).join("-");
+			        const parent = this.datasource.find(
+			          (item) => item.index === parentIndex
+			        );
+			        parent.check = true;
+			      }
+			     }
+			     return item;
+			  });
+		  }else{
+			   this.datasource =  this.datasource.map((item) => {
+				   item.check = false
+				   return item
+			   })
+		  }
+		  
+      
+		console.log(this.datasource ,'人生');
       });
     },
 
